@@ -17,6 +17,7 @@ jobs:
     name: 'Scrap page & get cards'
     runs-on: ubuntu-latest
     env:
+      ACTIONS_ALLOW_UNSECURE_COMMANDS: 'true'
       NEW_CARDS: true
       LATEST_RELEASE_CARDS_FILE: ./cards-latest_release.json
       CARDS_OUTPUT: ./cards.json
@@ -42,6 +43,7 @@ jobs:
 
       - name: Generate changelog file
         env:
+          ACTIONS_ALLOW_UNSECURE_COMMANDS: 'true'
           OLD_CARDS_FILE: ${{ env.LATEST_RELEASE_CARDS_FILE }}
         run: |
           chmod +x tools/generate-changelog.sh
@@ -53,6 +55,8 @@ jobs:
           then echo ::set-env name=NEW_CARDS::true; fi
   
       - name: Create tag, description & title variables
+        env:
+          ACTIONS_ALLOW_UNSECURE_COMMANDS: 'true'
         if: env.NEW_CARDS == 'true'
         run: |
           NEW_TITLE="New cards found at $(date --utc '+%Y/%m/%d %H:%Mhrs (UTC)')"
@@ -66,6 +70,8 @@ jobs:
           echo "::set-env name=BODY_MRKDWN::${BODY_MRKDWN}"
 
       - name: Create new release
+        env:
+          ACTIONS_ALLOW_UNSECURE_COMMANDS: 'true'
         if: env.NEW_CARDS == 'true'
         uses: Xotl/cool-github-releases@v1
         with:
