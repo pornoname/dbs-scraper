@@ -1,6 +1,8 @@
 name: 'DBS Scraper | Web deploy'
 
 on:
+  workflow_dispatch:
+    
   push:
     branches:
       - master
