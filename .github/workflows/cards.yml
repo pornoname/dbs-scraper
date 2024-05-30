@@ -1,6 +1,8 @@
 name: 'DBS Scraper | Update cards'
 
 on:
+  workflow_dispatch:
+    
   schedule:
     - cron:  '0 6 * * *'
   push: 
@@ -10,13 +12,12 @@ on:
       - 'scraper/**'
       - '.github/workflows/cards.yml'
       - 'tools/**'
-
 jobs:
   get_cards:
     name: 'Scrap page & get cards'
     runs-on: ubuntu-latest
     env:
-      NEW_CARDS: false
+      NEW_CARDS: true
       LATEST_RELEASE_CARDS_FILE: ./cards-latest_release.json
       CARDS_OUTPUT: ./cards.json
       CHANGELOG_OUTPUT: ./changelog.cards.txt
@@ -73,4 +74,3 @@ jobs:
           release_name: "🎉 ${{env.NEW_TITLE}}"
           body_mrkdwn: ${{env.BODY_MRKDWN}}
           assets: ${{env.CARDS_OUTPUT}}
-          github_token: ${{ secrets.GITHUB_OAUTH_TOKEN }}
